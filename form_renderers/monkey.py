@@ -40,4 +40,5 @@ for app_name in reversed(settings.INSTALLED_APPS):
     except ImportError:
         continue
     for name, func in inspect.getmembers(module, inspect.isfunction):
+        logger.info("Adding BaseForm.%s" % name)
         setattr(BaseForm, name, func)
