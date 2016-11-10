@@ -12,6 +12,7 @@ DATABASES = {
 
 INSTALLED_APPS = (
     "form_renderers",
+    "form_renderers.tests",
     "django.contrib.contenttypes",
     "django.contrib.sites",
 )

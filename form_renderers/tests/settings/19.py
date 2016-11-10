@@ -13,6 +13,7 @@ DATABASES = {
 INSTALLED_APPS = (
     "test_without_migrations",
     "form_renderers",
+    "form_renderers.tests",
     "django.contrib.contenttypes",
     "django.contrib.sites",
 )
