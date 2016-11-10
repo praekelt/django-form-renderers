@@ -22,10 +22,26 @@ What it does
 
 #. Every form receives a div-based render method called ``as_div``.
 
-#. If a field is required then an attribute ``required="required"`` is rendered for every widget. 
+#. If a field is required then an attribute ``required="required"`` is rendered for every widget.
 
-Coming soon
------------
 
-User definable render methods.
+Defining your own renderers
+---------------------------
+
+Create either ``form_renderers.py`` or ``form_renderers/__init__.py`` in your app. Each renderer must
+be a function::
+
+    def as_some_renderer(form):
+        return form._html_output(
+            ...
+        )
+
+    def as_another_renderer(form):
+        return form._html_output(
+            ...
+        )
+
+
+You can override the default ``as_div`` by creating a renderer called ``as_div`` in your app.
+The same rules that apply for Django template overriding apply to renderer overriding.
 
