@@ -1,6 +1,6 @@
 import logging
 
-from django.forms import Form
+from django.forms import BaseForm
 from django.forms.widgets import Widget
 
 from form_renderers.renderers import as_div
@@ -23,4 +23,4 @@ Widget.build_attrs = decorate(Widget.build_attrs)
 
 
 logger.info("Adding Form.as_div")
-Form.as_div = as_div
+BaseForm.as_div = as_div
