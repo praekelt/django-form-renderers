@@ -20,3 +20,8 @@ class FormTestCase(TestCase):
     def test_as_div(self):
         form = MyForm()
         self.failUnless("<div class=\"field\">" in form.as_div())
+
+
+    def test_as_some_renderer(self):
+        form = MyForm()
+        self.failUnless("<div class=\"field\">" in form.as_some_renderer())
