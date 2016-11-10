@@ -16,7 +16,7 @@ setup(
     ],
     tests_require=[
         "tox",
-    ,
+    ],
     include_package_data=True,
     classifiers=[
         "Programming Language :: Python",

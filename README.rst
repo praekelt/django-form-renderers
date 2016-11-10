@@ -17,3 +17,15 @@ Installation
 
 #. Add ``form_renderers`` to your ``INSTALLED_APPS`` setting.
 
+What it does
+------------
+
+#. Every form receives a div-based render method called ``as_div``.
+
+#. If a field is required then an attribute ``required="required"`` is rendered for every widget.
+
+Coming soon
+-----------
+
+User definable render methods.
+
