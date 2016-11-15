@@ -3,10 +3,10 @@ def as_div(form):
     using divs."""
 
     # Yes, evil but the easiest way to set this property for all forms.
-    form.required_css_class = "required"
+    form.required_css_class = "Field-Required"
 
     return form._html_output(
-        normal_row=u"""<div class="field"><div %(html_class_attr)s>%(label)s %(errors)s <div class="helptext">%(help_text)s</div> %(field)s</div></div>""",
+        normal_row=u"""<div class="Field">%(label)s<div %(html_class_attr)s>%(errors)s %(field)s</div><div class="helptext">%(help_text)s</div></div>""",
         error_row=u"%s",
         row_ender="</div>",
         help_text_html=u"%s",
