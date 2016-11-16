@@ -24,6 +24,7 @@ What it does
 
 #. If a field is required then an attribute ``required="required"`` is rendered for every widget.
 
+#. Every field and input gets extra BEM CSS classes.
 
 Defining your own renderers
 ---------------------------
