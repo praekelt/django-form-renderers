@@ -23,8 +23,9 @@ What it does
 #. Every form receives a div-based render method called ``as_div``.
 
 #. If a field is required then an attribute ``required="required"`` is rendered for every widget.
+   This is a safe blanket assumption.
 
-#. Every field and input gets extra BEM CSS classes.
+#. Optional - every field and input gets extra BEM CSS classes.
 
 Defining your own renderers
 ---------------------------
@@ -45,4 +46,12 @@ be a function::
 
 You can override the default ``as_div`` by creating a renderer called ``as_div`` in your app.
 The same rules that apply for Django template overriding apply to renderer overriding.
+
+BEM
+---
+
+BEM is a CSS naming convention that advocates explicit naming over inheritance. Django
+forms, fields and widgets are not BEM aware. To enabled BEM classes from settings do::
+
+    FORM_RENDERERS = {"enable-bem-classes": True}
 

@@ -11,7 +11,7 @@ except ImportError:
 from django.utils.module_loading import import_module
 from django.conf import settings
 
-from form_renderers import as_div
+from form_renderers import SETTINGS, as_div
 
 
 logger = logging.getLogger("logger")
@@ -35,7 +35,7 @@ logger.info("Patching Widget.build_attrs")
 Widget.build_attrs = decorate_a(Widget.build_attrs)
 
 
-# Add a CSS class describing the field. This is a safe blanket policy.
+# BEM - Add a CSS class describing the field.
 def decorate_b(meth):
     def decorator(context, *args, **kwargs):
         result = meth(context, *args, **kwargs)
@@ -46,11 +46,12 @@ def decorate_b(meth):
     return decorator
 
 
-logger.info("Patching BoundField.css_classes")
-BoundField.css_classes = decorate_b(BoundField.css_classes)
+if SETTINGS["enable-bem-classes"]:
+    logger.info("Patching BoundField.css_classes")
+    BoundField.css_classes = decorate_b(BoundField.css_classes)
 
 
-# Add a CSS class for the label. This is a safe blanket policy.
+# BEM - Add a CSS class for the label. This is a safe blanket policy.
 def decorate_c(meth):
     def decorator(context, contents=None, attrs=None, label_suffix=None):
         if attrs is None:
@@ -61,9 +62,9 @@ def decorate_c(meth):
         return meth(context, contents, attrs, label_suffix)
     return decorator
 
-
-logger.info("Patching BoundField.label_tag")
-BoundField.label_tag = decorate_c(BoundField.label_tag)
+if SETTINGS["enable-bem-classes"]:
+    logger.info("Patching BoundField.label_tag")
+    BoundField.label_tag = decorate_c(BoundField.label_tag)
 
 
 # Add the default as_div renderer
