@@ -3,7 +3,11 @@ import logging
 
 from django.forms import BaseForm
 from django.forms.widgets import Widget
-from django.forms.boundfield import BoundField
+try:
+    from django.forms.boundfield import BoundField
+except ImportError:
+    # Django 1.6
+    from django.forms.forms import BoundField
 from django.utils.module_loading import import_module
 from django.conf import settings
 
@@ -35,13 +39,31 @@ Widget.build_attrs = decorate_a(Widget.build_attrs)
 def decorate_b(meth):
     def decorator(context, *args, **kwargs):
         result = meth(context, *args, **kwargs)
-        result += " %s-item" % context.field.__class__.__name__
+        result += "Form-item Field %s-item" % context.field.__class__.__name__
+        if context.field.widget.is_required:
+            result += " Field--required"
         return result
     return decorator
 
 
 logger.info("Patching BoundField.css_classes")
 BoundField.css_classes = decorate_b(BoundField.css_classes)
+
+
+# Add a CSS class for the label. This is a safe blanket policy.
+def decorate_c(meth):
+    def decorator(context, contents=None, attrs=None, label_suffix=None):
+        if attrs is None:
+            attrs = {"class": ""}
+        if "class" in attrs:
+            attrs["class"] += " "
+        attrs["class"] += "Field-label"
+        return meth(context, contents, attrs, label_suffix)
+    return decorator
+
+
+logger.info("Patching BoundField.label_tag")
+BoundField.label_tag = decorate_c(BoundField.label_tag)
 
 
 # Add the default as_div renderer

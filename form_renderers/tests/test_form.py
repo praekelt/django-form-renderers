@@ -11,6 +11,7 @@ class MyForm(forms.Form):
         choices=(("blue", "Blue"), ("red", "Red")),
         widget=forms.widgets.CheckboxSelectMultiple
     )
+    some_date = forms.DateTimeField(widget=forms.widgets.SplitDateTimeWidget)
 
 
 class FormTestCase(TestCase):
@@ -19,11 +20,11 @@ class FormTestCase(TestCase):
         """Only one field gets the required attribute"""
         form = MyForm()
         li = form.as_p().split("required=\"required\"")
-        self.assertEqual(len(li), 4)
+        self.assertEqual(len(li), 6)
 
     def test_as_div(self):
         form = MyForm()
-        self.failUnless("<div class=\"Field\">" in form.as_div())
+        self.failUnless("<div class=\"Form-item Field" in form.as_div())
 
     def test_as_some_renderer(self):
         form = MyForm()
