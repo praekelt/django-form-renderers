@@ -20,3 +20,5 @@ INSTALLED_APPS = (
 SITE_ID = 1
 
 SECRET_KEY = "SECRET_KEY"
+
+FORM_RENDERERS = {"enable-bem-classes": True}
