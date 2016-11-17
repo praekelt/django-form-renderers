@@ -26,7 +26,7 @@ def decorate_a(meth):
             di["required"] = "required"
         if "class" not in di:
             di["class"] = ""
-        di["class"] = di["class"] + " " +context.__class__.__name__ + "-input"
+        di["class"] = di["class"] + " " +context.__class__.__name__ + "-input "
         return di
     return decorator
 
@@ -39,9 +39,9 @@ Widget.build_attrs = decorate_a(Widget.build_attrs)
 def decorate_b(meth):
     def decorator(context, *args, **kwargs):
         result = meth(context, *args, **kwargs)
-        result += "Form-item Field %s-item" % context.field.__class__.__name__
+        result += "Form-item Field %s-item " % context.field.__class__.__name__
         if context.field.widget.is_required:
-            result += " Field--required"
+            result += " Field--required "
         return result
     return decorator
 
