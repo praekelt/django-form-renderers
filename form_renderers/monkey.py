@@ -58,6 +58,8 @@ def decorate_c(meth):
             attrs = {"class": ""}
         if "class" in attrs:
             attrs["class"] += " "
+        else:
+            attrs["class"] = ""
         attrs["class"] += "Field-label"
         return meth(context, contents, attrs, label_suffix)
     return decorator
