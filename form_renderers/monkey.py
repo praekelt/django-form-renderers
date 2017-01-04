@@ -1,13 +1,16 @@
+from __future__ import unicode_literals
+
 import inspect
 import logging
 
 from django.forms import BaseForm
-from django.forms.widgets import Widget
+from django.forms.widgets import Widget, ChoiceInput
 try:
     from django.forms.boundfield import BoundField
 except ImportError:
     # Django 1.6
     from django.forms.forms import BoundField
+from django.utils.html import format_html
 from django.utils.module_loading import import_module
 from django.conf import settings
 
@@ -26,7 +29,7 @@ def decorate_a(meth):
             di["required"] = "required"
         if "class" not in di:
             di["class"] = ""
-        di["class"] = di["class"] + " " +context.__class__.__name__ + "-input"
+        di["class"] = di["class"] + " " + context.__class__.__name__
         return di
     return decorator
 
@@ -39,9 +42,9 @@ Widget.build_attrs = decorate_a(Widget.build_attrs)
 def decorate_b(meth):
     def decorator(context, *args, **kwargs):
         result = meth(context, *args, **kwargs)
-        result += "Form-item Field %s-item" % context.field.__class__.__name__
+        result += "Form-item Field %s " % context.field.__class__.__name__
         if context.field.widget.is_required:
-            result += " Field--required"
+            result += " Field--required "
         return result
     return decorator
 
@@ -58,6 +61,8 @@ def decorate_c(meth):
             attrs = {"class": ""}
         if "class" in attrs:
             attrs["class"] += " "
+        else:
+            attrs["class"] = ""
         attrs["class"] += "Field-label"
         return meth(context, contents, attrs, label_suffix)
     return decorator
@@ -65,6 +70,38 @@ def decorate_c(meth):
 if SETTINGS["enable-bem-classes"]:
     logger.info("Patching BoundField.label_tag")
     BoundField.label_tag = decorate_c(BoundField.label_tag)
+
+
+# Add an empty span after the label text for choice inputs. This span allows
+# easier targeting of the text and is a safe blanket policy.
+def my_render(self, name=None, value=None, attrs=None, choices=()):
+    # Newer Django has the id_for_label attribute
+    if hasattr(self, 'id_for_label'):
+        if self.id_for_label:
+            label_for = format_html(' for="{}"', self.id_for_label)
+        else:
+            label_for = ''
+        attrs = dict(self.attrs, **attrs) if attrs else self.attrs
+        return format_html(
+            '<label{}>{} <span class="{}-label">{}</span></label>', label_for,
+            self.tag(attrs), attrs['class'], self.choice_label
+        )
+    else:
+        name = name or self.name
+        value = value or self.value
+        attrs = attrs or self.attrs
+        if 'id' in self.attrs:
+            label_for = format_html(' for="{0}_{1}"', self.attrs['id'], self.index)
+        else:
+            label_for = ''
+        return format_html(
+            '<label{0}>{1} <span class="{2}-label">{3}</span></label>', label_for,
+            self.tag(), attrs['class'], self.choice_label
+        )
+
+
+logger.info("Patching ChoiceInput.render")
+ChoiceInput.render = my_render
 
 
 # Add the default as_div renderer

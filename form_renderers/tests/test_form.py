@@ -9,9 +9,18 @@ class MyForm(forms.Form):
     optional_field = forms.CharField(required=False)
     colours = forms.MultipleChoiceField(
         choices=(("blue", "Blue"), ("red", "Red")),
-        widget=forms.widgets.CheckboxSelectMultiple
+        widget=forms.widgets.CheckboxSelectMultiple,
+        required=False
     )
-    some_date = forms.DateTimeField(widget=forms.widgets.SplitDateTimeWidget)
+    some_date = forms.DateTimeField(
+        widget=forms.widgets.SplitDateTimeWidget,
+        required=False
+    )
+    a_colour = forms.ChoiceField(
+        choices=(("blue", "Blue"), ("red", "Red")),
+        widget=forms.widgets.RadioSelect,
+        required=False
+    )
 
 
 class FormTestCase(TestCase):
@@ -20,7 +29,7 @@ class FormTestCase(TestCase):
         """Only one field gets the required attribute"""
         form = MyForm()
         li = form.as_p().split("required=\"required\"")
-        self.assertEqual(len(li), 6)
+        self.assertEqual(len(li), 2)
 
     def test_as_div(self):
         form = MyForm()
