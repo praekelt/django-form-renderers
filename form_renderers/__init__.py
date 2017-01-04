@@ -1,7 +1,7 @@
 from django.conf import settings
 
 
-SETTINGS = {"enable-bem-classes": False}
+SETTINGS = {"enable-bem-classes": False, "replace-as-p": False, "replace-as-table": False}
 try:
     SETTINGS.update(settings.FORM_RENDERERS)
 except AttributeError:
