@@ -109,9 +109,11 @@ logger.info("Adding BaseForm.as_div")
 BaseForm.as_div = as_div
 
 
-# Optionally replace as_p globally
+# Optionally replace as_p and as_table globally
 if SETTINGS["replace-as-p"]:
     BaseForm.as_p = as_div
+if SETTINGS["replace-as-table"]:
+    BaseForm.as_table = as_div
 
 
 # Add renderers from installed apps. Reverse the order so topmost apps can

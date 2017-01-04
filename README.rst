@@ -47,12 +47,12 @@ be a function::
 You can override the default ``as_div`` by creating a renderer called ``as_div`` in your app.
 The same rules that apply for Django template overriding apply to renderer overriding.
 
-Replace as_p globally
----------------------
+Replace as_p and / or as_table globally
+---------------------------------------
 
-Most third party apps use `as_p` for rendering. Replace it globally by setting::
+Most third party apps use `as_p` or `as_table` for rendering. Replace it globally by setting::
 
-    FORM_RENDERERS = {"replace-as-p": True}
+    FORM_RENDERERS = {"replace-as-p": True, "replace-as-table": True}
 
 BEM
 ---
