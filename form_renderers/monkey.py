@@ -29,7 +29,7 @@ def decorate_a(meth):
             di["required"] = "required"
         if "class" not in di:
             di["class"] = ""
-        di["class"] = di["class"] + " " +context.__class__.__name__ + "-input "
+        di["class"] = di["class"] + " " + context.__class__.__name__
         return di
     return decorator
 
@@ -42,7 +42,7 @@ Widget.build_attrs = decorate_a(Widget.build_attrs)
 def decorate_b(meth):
     def decorator(context, *args, **kwargs):
         result = meth(context, *args, **kwargs)
-        result += "Form-item Field %s-item " % context.field.__class__.__name__
+        result += "Form-item Field %s " % context.field.__class__.__name__
         if context.field.widget.is_required:
             result += " Field--required "
         return result
@@ -83,7 +83,8 @@ def my_render(self, name=None, value=None, attrs=None, choices=()):
             label_for = ''
         attrs = dict(self.attrs, **attrs) if attrs else self.attrs
         return format_html(
-            '<label{}>{} {}<span></span></label>', label_for, self.tag(attrs), self.choice_label
+            '<label{}>{} <span class="{}-label">{}</span></label>', label_for,
+            self.tag(attrs), attrs['class'], self.choice_label
         )
     else:
         name = name or self.name
@@ -93,7 +94,10 @@ def my_render(self, name=None, value=None, attrs=None, choices=()):
             label_for = format_html(' for="{0}_{1}"', self.attrs['id'], self.index)
         else:
             label_for = ''
-        return format_html('<label{0}>{1} {2}<span></span></label>', label_for, self.tag(), self.choice_label)
+        return format_html(
+            '<label{0}>{1} <span class="{2}-label">{3}</span></label>', label_for,
+            self.tag(), attrs['class'], self.choice_label
+        )
 
 
 logger.info("Patching ChoiceInput.render")
