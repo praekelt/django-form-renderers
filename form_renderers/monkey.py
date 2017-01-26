@@ -29,7 +29,7 @@ def decorate_a(meth):
             di["required"] = "required"
         if "class" not in di:
             di["class"] = ""
-        di["class"] = di["class"] + " " + context.__class__.__name_ + " "
+        di["class"] = di["class"] + " " + context.__class__.__name__ + " "
         return di
     return decorator
 
