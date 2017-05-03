@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.3.2
+-----
+#. Django 1.10 tests pass. Handle Django 1.11 widget refactor gracefully.
+
 0.3.1
 -----
 #. Add a setting allowing as_p and as_table to be overridden globally.

@@ -4,7 +4,12 @@ import inspect
 import logging
 
 from django.forms import BaseForm
-from django.forms.widgets import Widget, ChoiceInput
+from django.forms.widgets import Widget
+HAS_CHOICE_INPUT = True
+try:
+    from django.forms.widgets import ChoiceInput
+except ImportError:
+    HAS_CHOICE_INPUT = False
 try:
     from django.forms.boundfield import BoundField
 except ImportError:
@@ -25,11 +30,12 @@ logger = logging.getLogger("logger")
 def decorate_a(meth):
     def decorator(context, *args, **kwargs):
         di = meth(context, *args, **kwargs)
-        if context.is_required and ("required" not in di):
+        #if context.is_required and ("required" not in di):
+        if context.is_required:
             di["required"] = "required"
         if "class" not in di:
             di["class"] = ""
-        di["class"] = di["class"] + " " + context.__class__.__name__
+        di["class"] = di["class"] + " " + context.__class__.__name__ + " "
         return di
     return decorator
 
@@ -42,7 +48,7 @@ Widget.build_attrs = decorate_a(Widget.build_attrs)
 def decorate_b(meth):
     def decorator(context, *args, **kwargs):
         result = meth(context, *args, **kwargs)
-        result += "Form-item Field %s " % context.field.__class__.__name__
+        result += " Form-item Field %s " % context.field.__class__.__name__
         if context.field.widget.is_required:
             result += " Field--required "
         return result
@@ -99,9 +105,9 @@ def my_render(self, name=None, value=None, attrs=None, choices=()):
             self.tag(), attrs['class'], self.choice_label
         )
 
-
-logger.info("Patching ChoiceInput.render")
-ChoiceInput.render = my_render
+if HAS_CHOICE_INPUT:
+    logger.info("Patching ChoiceInput.render")
+    ChoiceInput.render = my_render
 
 
 # Add the default as_div renderer

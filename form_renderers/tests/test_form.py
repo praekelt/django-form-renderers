@@ -33,7 +33,7 @@ class FormTestCase(TestCase):
 
     def test_as_div(self):
         form = MyForm()
-        self.failUnless("<div class=\"Form-item Field" in form.as_div())
+        self.failUnless("<div class=\" Form-item Field" in form.as_div())
 
     def test_as_some_renderer(self):
         form = MyForm()
