@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="django-form-renderers",
-    version="0.3.1",
+    version="0.3.2",
     description="Sometimes form.as_p doesn't cut it. This app adds more render methods to all forms. It also adds BEM style CSS classes to all form widgets and inputs.",
     long_description = open("README.rst", "r").read() + open("AUTHORS.rst", "r").read() + open("CHANGELOG.rst", "r").read(),
     author="Praekelt Consulting",
