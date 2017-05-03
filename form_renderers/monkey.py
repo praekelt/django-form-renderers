@@ -25,7 +25,8 @@ logger = logging.getLogger("logger")
 def decorate_a(meth):
     def decorator(context, *args, **kwargs):
         di = meth(context, *args, **kwargs)
-        if context.is_required and ("required" not in di):
+        #if context.is_required and ("required" not in di):
+        if context.is_required:
             di["required"] = "required"
         if "class" not in di:
             di["class"] = ""
