@@ -4,7 +4,12 @@ import inspect
 import logging
 
 from django.forms import BaseForm
-from django.forms.widgets import Widget, ChoiceInput
+from django.forms.widgets import Widget
+HAS_CHOICE_INPUT = True
+try:
+    from django.forms.widgets import ChoiceInput
+except ImportError:
+    HAS_CHOICE_INPUT = False
 try:
     from django.forms.boundfield import BoundField
 except ImportError:
@@ -100,9 +105,9 @@ def my_render(self, name=None, value=None, attrs=None, choices=()):
             self.tag(), attrs['class'], self.choice_label
         )
 
-
-logger.info("Patching ChoiceInput.render")
-ChoiceInput.render = my_render
+if HAS_CHOICE_INPUT:
+    logger.info("Patching ChoiceInput.render")
+    ChoiceInput.render = my_render
 
 
 # Add the default as_div renderer
